@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer QA Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.617/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.617/styles/kendo.silver.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2020.2.617/styles/kendo.silver.mobile.min.css" />
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Employer Database Dashboard</h1>
+            <p class="lead">To get started, select a field and a db year.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <label for="field">Group By Field</label>
+                <select id="field">
+                    <option value="County">County</option>
+                    <option value="Jurisdiction">Jurisdiction</option>
+                    <!-- <option value="EmpName">EmpName</option> -->
+                    <option value="Zip">Zip</option>
+                    <option value="SUBREGION">SUBREGION</option>
+                    <option value="REGION90">REGION90</option>
+                    <option value="Naics6">Naics6</option>
+                </select>
+            </div>
+            <!-- <div class="col-6">
+                <label for="year">Database Year</label>
+                <select id="year">
+                    <option value="2019">2019</option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2015">2015</option>
+                    <option value="2012">2012</option>
+                    <option value="2010">2010</option>
+                </select>
+            </div> -->
+        </div>
+        <br />
+        <div class="row">
+            <div id="grid"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-request@2.0.3/dist/umd/request.umd.js"></script>
+    <script src="https://unpkg.com/@esri/arcgis-rest-feature-layer@2.0.3/dist/umd/feature-layer.umd.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js"></script>
+    <script src="data.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
