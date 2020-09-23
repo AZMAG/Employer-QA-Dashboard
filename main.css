@@ -1,3 +1,16 @@
 #btnRemoveChart {
   display: none;
 }
+
+.k-grid-content,
+.k-grid-content-locked {
+  max-height: 350px;
+}
+
+.k-grid tr td {
+  border-bottom: 1px solid gray;
+}
+
+.table-header-cell {
+  font-weight: bold;
+}

@@ -1,9 +1,32 @@
 const years = ['2010', '2012', '2015', '2016', '2017', '2018', '2019'];
+let filteredYears = [];
 
 async function startUp() {
   setupDropdowns();
+  setupYearCheckboxes();
   setupKendoGrid();
   updateKendoGrid('County', '2019');
+}
+function updateColumns() {
+  const grid = $('#grid').data('kendoGrid');
+  const select = grid.dataItem(grid.select());
+  grid.setOptions({
+    columns: [
+      {
+        field: 'groupValue',
+        title: 'Grouped Value',
+        width: 150,
+        locked: true,
+        lockable: false,
+      },
+      ...getYearSumFields(),
+    ],
+  });
+  if (select) {
+    let selectRow = grid.tbody.find("tr[data-uid='" + select.uid + "']");
+    grid.select(selectRow);
+  }
+  kendoGridChange();
 }
 
 async function updateKendoGrid(field) {
@@ -19,14 +42,19 @@ async function updateKendoGrid(field) {
   });
   const grid = $('#grid').data('kendoGrid');
   grid.setDataSource(dataSource);
+  updateColumns(grid);
+  //update selected row
+
   kendo.ui.progress($('#grid'), false);
 }
+
 function resetChart() {
   try {
     $('#chart').data('kendoChart').destroy();
     $('#chart').empty();
     $('#chart').removeClass('k-chart');
     $('#btnRemoveChart').hide();
+    clearGridSelection();
   } catch (error) {}
 }
 
@@ -35,18 +63,33 @@ $('#btnRemoveChart').click(resetChart);
 function getYearSumFields(type) {
   let fields = [];
   years.forEach((year) => {
-    fields.push({
-      field: 'BusSum' + year,
-      title: 'Business ' + year,
-      format: '{0:N0}',
-      width: 150,
-    });
-    fields.push({
-      field: 'EmpSum' + year,
-      title: 'Employees ' + year,
-      format: '{0:N0}',
-      width: 150,
-    });
+    if (!filteredYears.includes(year)) {
+      fields.push({
+        field: 'BusSum' + year,
+        title: 'Business ' + year,
+        format: '{0:N0}',
+        width: 150,
+        attributes: {
+          style:
+            'background-color: rgb(173, 204, 230); font-weight: 600; border: 1px solide black;',
+        },
+        headerAttributes: {
+          style: 'font-weight: 600;',
+        },
+      });
+      fields.push({
+        field: 'EmpSum' + year,
+        title: 'Employees ' + year,
+        format: '{0:N0}',
+        width: 150,
+        attributes: {
+          style: 'background-color: rgb(255,204,204); font-weight: 600;',
+        },
+        headerAttributes: {
+          style: 'font-weight: 600;',
+        },
+      });
+    }
   });
   if (type) {
     return fields.filter((row) => row.field.includes(type));
@@ -54,23 +97,34 @@ function getYearSumFields(type) {
   return fields;
 }
 
+function clearGridSelection() {
+  const grid = $('#grid').data('kendoGrid');
+  grid.clearSelection();
+}
+
+function kendoGridChange() {
+  const grid = $('#grid').data('kendoGrid');
+  const data = grid.dataItem(grid.select());
+
+  if (data) {
+    const title = `${$('#field').data('kendoDropDownList').value()} - ${
+      data.groupValue
+    }`;
+
+    setupKendoChart(data, title);
+  }
+}
+
 function setupKendoGrid() {
   window.kendo.ui.progress($('#grid'), true);
   let yearFields = getYearSumFields();
   $('#grid').kendoGrid({
-    height: 550,
     width: 1200,
+    maxHeight: 500,
     scrollable: {
       virtual: true,
     },
-    change: function (e) {
-      const [row] = this.select();
-      const data = this.dataItem(row);
-      const title = `${$('#field').data('kendoDropDownList').value()} - ${
-        data.groupValue
-      }`;
-      setupKendoChart(data, title);
-    },
+    change: kendoGridChange,
     selectable: true,
     sortable: true,
     columns: [
@@ -80,6 +134,9 @@ function setupKendoGrid() {
         width: 150,
         locked: true,
         lockable: false,
+        headerAttributes: {
+          style: 'font-weight: 600;',
+        },
       },
       ...getYearSumFields(),
     ],
@@ -88,12 +145,12 @@ function setupKendoGrid() {
 
 function setupKendoChart(data, title) {
   $('#btnRemoveChart').show();
-  let busData = years.map((year) => data['BusSum' + year]);
-  let empData = years.map((year) => data['EmpSum' + year]);
+  let chartYears = years.filter((year) => !filteredYears.includes(year));
+  let busData = chartYears.map((year) => data['BusSum' + year]);
+  let empData = chartYears.map((year) => data['EmpSum' + year]);
   let bufferAxis = 0.1;
   let busMax = Math.max(...busData.filter((num) => num));
   let empMax = Math.max(...empData.filter((num) => num));
-  console.log(busMax, empMax);
 
   let labels = $('#chart').kendoChart({
     title: {
@@ -150,7 +207,7 @@ function setupKendoChart(data, title) {
       format: 'N0',
     },
     categoryAxis: {
-      categories: years,
+      categories: chartYears,
       majorGridLines: {
         visible: false,
       },
@@ -168,6 +225,30 @@ function dropdownChanged() {
 
 function setupDropdowns() {
   $('#field').kendoDropDownList({ change: dropdownChanged });
+}
+
+function checkboxChanged(e) {
+  let checked = $(e.currentTarget).is(':checked');
+  let val = $(e.currentTarget).data('year') + '';
+  if (!checked) {
+    filteredYears.push(val);
+  } else {
+    filteredYears = filteredYears.filter((year) => year !== val);
+  }
+  updateColumns();
+}
+
+function setupYearCheckboxes() {
+  let yearList = years.map((year) => {
+    return `
+      <div class="form-check form-check-inline">
+        <input class="form-check-input yearCbox" data-year="${year}" type="checkbox" id="yearCbox${year}" checked>
+        <label class="form-check-label" for="yearCbox${year}">${year}</label>
+      </div>
+    `;
+  });
+  $('#yearCheckboxForm').html(yearList.join(''));
+  $('.yearCbox').change(checkboxChanged);
 }
 
 $(document).ready(() => startUp());
