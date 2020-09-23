@@ -17,7 +17,7 @@
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
             <h1 class="display-4">Employer Database Dashboard</h1>
-            <p class="lead">To get started, select a field and a db year.</p>
+            <p class="lead">To get started, select a field.</p>
         </div>
     </div>
     <div class="container">
@@ -34,20 +34,16 @@
                     <option value="Naics6">Naics6</option>
                 </select>
             </div>
-            <!-- <div class="col-6">
-                <label for="year">Database Year</label>
-                <select id="year">
-                    <option value="2019">2019</option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2015">2015</option>
-                    <option value="2012">2012</option>
-                    <option value="2010">2010</option>
-                </select>
-            </div> -->
         </div>
         <br />
         <div class="row">
+
+            <div class="col-12" id="chartContainer">
+                <button id='btnRemoveChart' class='btn btn-sm btn-primary'>Remove Chart</button>
+                <br />
+                <br />
+                <div id="chart"></div>
+            </div>
             <div id="grid"></div>
         </div>
     </div>
