@@ -14,55 +14,76 @@
 </head>
 
 <body>
-    <div class="jumbotron jumbotron-fluid">
-        <div class="container">
-            <h1 class="display-4">Employer Database Dashboard</h1>
-            <p class="lead">To get started, select a field.</p>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <label for="field">Group By Field:</label>
-                <br />
-                <select id="field">
-                    <option value="County">County</option>
-                    <option value="Jurisdiction">Jurisdiction</option>
-                    <!-- <option value="EmpName">EmpName</option> -->
-                    <option value="Zip">Zip</option>
-                    <option value="SUBREGION">SUBREGION</option>
-                    <option value="REGION90">REGION90</option>
-                    <option value="Naics6">Naics6</option>
-                </select>
-            </div>
-            <div class="col-6">
-                <label for="yearCheckboxForm">Employer DB Years to include in analysis: </label>
-                <form id='yearCheckboxForm'></form>
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-12" id="chartContainer">
-                <button id='btnRemoveChart' class='btn btn-sm btn-primary'>Remove Chart</button>
-                <br />
-                <br />
-                <div id="chart"></div>
-            </div>
-            <h6>Click on any of the rows below to show line chart</h6>
-            <br />
-            <div id="grid"></div>
-        </div>
-        <footer>
 
-        </footer>
-    </div>
+    <body class="text-center">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://unpkg.com/@esri/arcgis-rest-request@2.0.3/dist/umd/request.umd.js"></script>
-    <script src="https://unpkg.com/@esri/arcgis-rest-feature-layer@2.0.3/dist/umd/feature-layer.umd.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js"></script>
-    <script src="data.js"></script>
-    <script src="main.js"></script>
-</body>
+        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+            <header class="masthead">
+                <div class="inner">
+                    <h3 class="masthead-brand">Employer Database Dashboard</h3>
+                </div>
+            </header>
+
+            <main role="main" class="inner cover">
+                <label for="analysisType">To begin, choose a type of analysis from the dropdown:</label>
+                <select id="analysisType" style="display: none; width:400px;"></select>
+                <br />
+                <br />
+                <div id="analysisArea"></div>
+
+                <!-- <div class="row" style="text-align: center;">
+                    <div style="display: none;" class="col-12 autoCompleteContainer">
+                        <h6><label for="autoComplete">Start typing an employer name:</label></h6>
+                        <input type="text" id="autoComplete" style="width: 100%;" />
+                    </div>
+                    <div class="col-6 attributeSelectors">
+                        <label for="field">Group by area field:</label>
+                        <br />
+                        <select id="field1"></select>
+                    </div>
+                    <div class="col-6 attributeSelectors">
+                        <label for="field2">Group by secondary attribute field:</label>
+                        <br />
+                        <select id="field2"></select>
+                    </div>
+                </div>
+                <br />
+                <div class="row" style="text-align: center;">
+                    <div class="col-12">
+                        <label for="yearCheckboxForm">Employer DB Years to include in analysis: </label>
+                        <form id='yearCheckboxForm'></form>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-12" id="chartContainer">
+                        <button id='btnRemoveChart' class='btn btn-sm btn-primary'>Remove Chart</button>
+                        <br />
+                        <br />
+                        <div id="chart"></div>
+                    </div>
+                    <div id="gridContainer">
+                        <h6 id="gridTitle">Click on any of the rows below to show line chart</h6>
+                        <br />
+                        <div id="grid"></div>
+                    </div>
+                </div> -->
+            </main>
+        </div>
+
+
+
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://unpkg.com/@esri/arcgis-rest-request@2.0.3/dist/umd/request.umd.js"></script>
+        <script
+            src="https://unpkg.com/@esri/arcgis-rest-feature-layer@2.0.3/dist/umd/feature-layer.umd.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js"></script>
+        <script src="data.js"></script>
+        <script src="charts.js"></script>
+        <script src="reportByEmpName.js"></script>
+        <script src="reportByAttrs.js"></script>
+        <script src="autoComplete.js"></script>
+        <script src="main.js"></script>
+    </body>
 
 </html>
