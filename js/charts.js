@@ -7,10 +7,6 @@ function setupKendoLineChart({
   title,
   chartYears,
 }) {
-  // let busData = chartYears.map((year) => data['BusSum' + year]);
-  //   let empData = chartYears.map((year) => data['EmpSum' + year]);
-  //   let busMax = Math.max(...busData.filter((num) => num));
-  //   let empMax = Math.max(...empData.filter((num) => num));
   let bufferAxis = 0.1;
 
   let series = [
@@ -21,7 +17,7 @@ function setupKendoLineChart({
       color: 'red',
     },
     {
-      name: 'Businesses',
+      name: 'Number of Locations',
       data: busData,
       axis: 'bus',
       color: 'blue',

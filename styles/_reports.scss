@@ -1,0 +1,32 @@
+#empNameResultsContainer {
+  color: rgb(35, 35, 35);
+  .reportBoxContainer {
+    display: flex;
+    .reportBox {
+      flex: 1;
+      margin: 10px;
+    }
+  }
+}
+.note {
+  font-style: italic;
+  font-size: 12px;
+}
+
+hr {
+  border-top: 1px solid white;
+  width: 80vw;
+}
+
+.reportOutsideContainer {
+  width: 80vw;
+}
+
+#chartContainer {
+  background-color: white;
+  color: black;
+}
+
+#gridContainer {
+  margin: auto;
+}

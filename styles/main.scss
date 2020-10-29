@@ -1,0 +1,18 @@
+@import 'autocomplete';
+@import 'chart';
+@import 'layout';
+@import 'reports';
+@import 'kendoMag';
+
+#btnRemoveChart {
+  display: none;
+}
+
+.table-header-cell {
+  font-weight: bold;
+}
+
+.form-check-inline {
+  color: black;
+  font-size: small;
+}

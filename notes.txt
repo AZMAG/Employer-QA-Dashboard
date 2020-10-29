@@ -2,11 +2,12 @@
 -Refine filters by geography and attribute
 -Employer search by geography (grouped employers)
 -Add percent change columns with ability to choose years to compare
-            -possible add percent change year over year on the graph
-            -ability to show percent change in table from year to the left
+    -possible add percent change year over year on the graph
+    -ability to show percent change in table from year to the left
 -add key industries.  (gray out where it doesn’t exist)
 -add employers by size summaries per geographies
--ability to turn off business or employees columns when wanting to just compare one of them. 
+-ability to turn off business 
+or employees columns when wanting to just compare one of them. 
 -Make colors for each year the same, but employees would be a diff shade.  
 -highlight whole row when selected.
 -add taz boundaries.

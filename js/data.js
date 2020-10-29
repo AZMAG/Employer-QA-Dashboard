@@ -1,18 +1,3 @@
-async function getData() {
-  const res = await arcgisRest.queryFeatures({
-    url:
-      'http://magdevarcgis:6080/arcgis/rest/services/Test/empKendoTest/MapServer/1',
-    // where: "Arizona_Total<>0",
-    returnGeometry: false,
-    outFields: ['*'],
-  });
-
-  var features = res.features;
-  return features.map(function (feature) {
-    return feature.attributes;
-  });
-}
-
 async function getDataByGroupField(field) {
   let url = `https://geo.azmag.gov/services/EmployerDashboard/Data/GetDataByGroupField?field=${field}`;
   let res = await fetch(url);
@@ -28,7 +13,6 @@ async function getDataByEmpName(empName) {
 }
 
 function groupDataByOneField(data, fieldName, groupName) {
-  debugger;
   let rtnData = [];
   let rtnGroupings = {};
 
