@@ -129,6 +129,8 @@ function setupKendoGrid() {
     change: kendoGridChange,
     selectable: true,
     sortable: true,
+    filterable: true,
+    searchable: true,
     columns: [
       {
         field: 'groupValue',

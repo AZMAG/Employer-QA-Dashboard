@@ -8,6 +8,6 @@
 -add employers by size summaries per geographies
 -ability to turn off business 
 or employees columns when wanting to just compare one of them. 
--Make colors for each year the same, but employees would be a diff shade.  
+-Make colors for each year the same, but employees would be a diff shade.
 -highlight whole row when selected.
 -add taz boundaries.
