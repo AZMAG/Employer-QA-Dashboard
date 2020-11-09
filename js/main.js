@@ -9,6 +9,11 @@ function setupAnalysisTypeDropdown() {
       setupFunction: setupAttrAnalysis,
     },
     {
+      label: 'Employers By Size',
+      value: 'empSize',
+      setupFunction: setupEmpSizeAnalysis,
+    },
+    {
       label: 'Employer Name',
       value: 'empName',
       setupFunction: setupEmpNameAnalysis,

@@ -60,6 +60,14 @@ function groupDataByTwoFields(
   // return rtnData.filter((x) => x[groupName] !== 'null');
 }
 
+async function getEmpSummaryBySize(groupField) {
+  let url = `https://geo.azmag.gov/services/EmployerDashboard/Data/GetEmpSummaryBySize?groupField=${groupField}`;
+  let res = await fetch(url);
+  let data = await res.json();
+
+  return data;
+}
+
 async function getDataByGroupFields(field1, field2) {
   let url = `https://geo.azmag.gov/services/EmployerDashboard/Data/GetDataByGroupFields?field1=${field1}&field2=${field2}`;
   let res = await fetch(url);

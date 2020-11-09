@@ -7,6 +7,7 @@ function setupKendoLineChart({
   title,
   chartYears,
 }) {
+  console.log(chartYears);
   let bufferAxis = 0.1;
 
   let series = [

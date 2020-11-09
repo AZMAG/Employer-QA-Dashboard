@@ -24,25 +24,32 @@ function setupAttrAnalysis() {
             </div>
             <div id="empAttrResultsContainer" style="display:none;">
             <div class="row" style="text-align: center;">
-                    <div class="col-12">
-                        <label for="yearCheckboxForm">Employer DB Years to include in analysis: </label>
-                        <form id='yearCheckboxForm'></form>
-                    </div>
+                <div class="col-12">
+                    <label for="yearCheckboxForm">Employer DB Years to include in analysis: </label>
+                    <form id='yearCheckboxForm'></form>
                 </div>
-                <br />
-                <div class="row">
-                    <div class="col-12" id="chartContainer">
-                        <button id='btnRemoveChart' class='btn btn-sm btn-primary'>Remove Chart</button>
-                        <br />
-                        <br />
-                        <div id="chart"></div>
+            </div>
+            <div class="reportBoxContainer">
+                  <div class="card reportBox" id="chartContainer" style="display: none;">
+                    <div id="chart"></div>
+                    <button id='btnRemoveChart' class='btn btn-sm btn-primary'>Remove Chart</button>
+                  </div>
+                  <div class="card reportBox">
+                    <div class="card-header">
                     </div>
-                    <div id="gridContainer">
-                        <h6 id="gridTitle">Click on any of the rows below to show line chart</h6>
-                        <br />
+                    <div class="card-body">
+                      <div class="chart-container">
+                          <form id='empSizeCheckboxForm'></form>
+                          <div id="empSizeChart"></div>
                         <div id="grid"></div>
+                      </div>
                     </div>
-              </div>
+                    <div class="card-footer">
+                      <span class="note">*Note: Click any of the above rows to see line chart.</span> <br />
+                      <span class="note">*Note2: Pinal County data started in 2016</span>
+                    </div>
+                  </div>
+                </div>
               </div>
         </div>
     </div>
@@ -50,6 +57,7 @@ function setupAttrAnalysis() {
   `);
   setupDropdowns();
   setupKendoGrid();
+  setupYearCheckboxes();
 }
 function checkboxChanged(e) {
   let checked = $(e.currentTarget).is(':checked');
@@ -83,6 +91,7 @@ const areaOptions = [
 ];
 
 const attributeOptions = [
+  { value: 'Naics6', label: 'Naics2' },
   { value: 'Naics6', label: 'Naics6' },
   { value: 'Cluster', label: 'Cluster' },
   { value: 'SubCluster', label: 'SubCluster' },
@@ -120,7 +129,7 @@ function setupKendoGrid() {
   window.kendo.ui.progress($('#grid'), true);
   let yearFields = getYearSumFields();
   $('#grid').kendoGrid({
-    width: '1200px',
+    // width: '1200px',
     height: '500px',
 
     scrollable: {
@@ -156,6 +165,9 @@ function kendoGridChange() {
   const data = grid.dataItem(grid.select());
 
   if (data) {
+    $('#chartContainer').show();
+    $('#btnRemoveChart').show();
+    grid.resize();
     const title = `${$('#field1').data('kendoDropDownList').value()} - ${
       data.groupValue
     }`;
@@ -186,6 +198,9 @@ function resetChart() {
     $('#chart').empty();
     $('#chart').removeClass('k-chart');
     $('#btnRemoveChart').hide();
+    $('#chartContainer').hide();
+    const grid = $('#grid').data('kendoGrid');
+    grid.resize();
     clearGridSelection();
   } catch (error) {}
 }
@@ -306,5 +321,5 @@ function getYearSumFields(type) {
   }
   return fields;
 }
-
-$('#btnRemoveChart').click(resetChart);
+$('body').on('click', '#btnRemoveChart', resetChart);
+// $('#btnRemoveChart').click(resetChart);
