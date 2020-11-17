@@ -86,12 +86,12 @@ const areaOptions = [
   { value: 'County', label: 'County' },
   { value: 'Jurisdiction', label: 'Jurisdiction' },
   { value: 'Zip', label: 'Zip Code' },
-  { value: 'REGION90', label: 'Region' },
+  { value: 'Region', label: 'Region' },
   { value: 'SUBREGION', label: 'Sub Region' },
 ];
 
 const attributeOptions = [
-  { value: 'Naics6', label: 'Naics2' },
+  { value: 'Naics2', label: 'Naics2' },
   { value: 'Naics6', label: 'Naics6' },
   { value: 'Cluster', label: 'Cluster' },
   { value: 'SubCluster', label: 'SubCluster' },
@@ -213,8 +213,8 @@ function updateColumns() {
         field: 'groupValue',
         title: 'Grouped Value',
         width: 150,
-        locked: true,
-        // lockable: false,
+        // locked: true,
+        lockable: false,
       },
       ...getYearSumFields(),
     ],
@@ -228,24 +228,61 @@ function updateColumns() {
 let detailData;
 
 function detailInit(e) {
-  // console.log(detailData);
-  // console.log(e.detailCell);
-  // console.log(e.data);
-  // e.detailCell
-
   let filteredData = detailData.filter(
-    (row) => row.parent === e.data.groupValue
+    (row) => row.groupValue1 === e.data.groupValue
   );
-  console.log(detailData);
   $('<div/>')
     .appendTo(e.detailCell)
     .kendoGrid({
-      dataSource: detailData,
-      scrollable: false,
+      dataSource: filteredData,
+      scrollable: true,
+      height: '400px',
       sortable: true,
-      pageable: true,
-      columns: [{ field: 'groupValue', width: '110px' }, ...getYearSumFields()],
+      pageable: false,
+      columns: [
+        { field: 'groupValue2', width: '310px' },
+        ...getYearSumFields(),
+      ],
     });
+}
+
+function addPctChangeFields(data) {
+  return data.map((row) => {
+    let keys = Object.keys(row)
+      .filter((key) => key.includes('EmpSum'))
+      .map((key) => key.slice(-4))
+      .sort();
+    keys.forEach((key, i) => {
+      if (i !== 0) {
+        let previousEmps = row['EmpSum' + keys[i - 1]];
+        let previousBus = row['BusSum' + keys[i - 1]];
+        let currentEmps = row['EmpSum' + key];
+        let currentBus = row['BusSum' + key];
+        let empDifference = currentEmps - previousEmps;
+        let busDifference = currentBus - previousBus;
+        let empPctChange = empDifference / previousEmps;
+        let busPctChange = busDifference / previousBus;
+
+        // console.log({
+        //   year: key,
+        //   keys,
+        //   row,
+        //   previousEmps,
+        //   previousBus,
+        //   currentEmps,
+        //   currentBus,
+        //   empDifference,
+        //   busDifference,
+        //   empPctChange,
+        //   busPctChange,
+        // });
+
+        row['EmpPctChange' + key] = empPctChange;
+        row['BusPctChange' + key] = busPctChange;
+      }
+    });
+    return row;
+  });
 }
 
 async function updateKendoGrid(field1, field2) {
@@ -267,6 +304,7 @@ async function updateKendoGrid(field1, field2) {
     });
   } else {
     data = await getDataByGroupField(field1);
+    data = addPctChangeFields(data);
     grid.setOptions({
       detailInit: null,
     });
@@ -288,13 +326,13 @@ async function updateKendoGrid(field1, field2) {
 
 function getYearSumFields(type) {
   let fields = [];
-  years.forEach((year) => {
+  years.forEach((year, i) => {
     if (!filteredYears.includes(year)) {
       fields.push({
         field: 'BusSum' + year,
         title: 'Business ' + year,
         format: '{0:N0}',
-        width: 150,
+        width: 200,
         attributes: {
           style: 'font-weight: 600; border: 1px solid gray;',
         },
@@ -306,7 +344,7 @@ function getYearSumFields(type) {
         field: 'EmpSum' + year,
         title: 'Employees ' + year,
         format: '{0:N0}',
-        width: 150,
+        width: 200,
         attributes: {
           style: 'font-weight: 600; border: 1px solid gray;',
         },
@@ -314,6 +352,32 @@ function getYearSumFields(type) {
           style: 'font-weight: 600;',
         },
       });
+      if (i !== 0) {
+        fields.push({
+          field: 'EmpPctChange' + year,
+          title: 'Emp % Change ' + year,
+          format: '{0:P1}',
+          width: 200,
+          attributes: {
+            style: 'font-weight: 600; border: 1px solid gray;',
+          },
+          headerAttributes: {
+            style: 'font-weight: 600;',
+          },
+        });
+        fields.push({
+          field: 'BusPctChange' + year,
+          title: 'Bus % Change ' + year,
+          format: '{0:P1}',
+          width: 200,
+          attributes: {
+            style: 'font-weight: 600; border: 1px solid gray;',
+          },
+          headerAttributes: {
+            style: 'font-weight: 600;',
+          },
+        });
+      }
     }
   });
   if (type) {

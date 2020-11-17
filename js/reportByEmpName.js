@@ -125,7 +125,7 @@ function setupEmpNameAnalysis() {
         { field: 'EmpName', title: 'EmpName', width: 250 },
         { field: 'Jurisdiction', title: 'Jurisdiction', width: 250 },
         { field: 'NAICS6_DES', title: 'NAICS6_DES', width: 250 },
-        { field: 'REGION90', title: 'REGION90', width: 250 },
+        { field: 'REGION', title: 'REGION', width: 250 },
         { field: 'SUBREGION', title: 'SUBREGION', width: 250 },
         { field: 'SubCluster', title: 'SubCluster', width: 250 },
         { field: 'Zip', title: 'Zip', width: 250 },

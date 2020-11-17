@@ -198,7 +198,7 @@ function setupEmpSizeAnalysis() {
     { value: 'County', label: 'County' },
     { value: 'Jurisdiction', label: 'Jurisdiction' },
     { value: 'Zip', label: 'Zip Code' },
-    { value: 'REGION90', label: 'Region' },
+    { value: 'REGION', label: 'Region' },
     { value: 'SUBREGION', label: 'Sub Region' },
   ];
 
